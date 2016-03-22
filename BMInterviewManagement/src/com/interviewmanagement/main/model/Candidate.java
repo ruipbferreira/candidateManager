@@ -32,7 +32,6 @@ public class Candidate {
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-
 	private String name;
 	private String phone;
 	private String level;
@@ -49,9 +48,9 @@ public class Candidate {
 	private String email;
 	@OneToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "infoId")
-
 	private CandidateProfessionalInfo professionalInfo;
-
+	private String filename;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -111,5 +110,11 @@ public class Candidate {
 	}
 	public void setProfessionalInfo(CandidateProfessionalInfo professionalInfo) {
 		this.professionalInfo = professionalInfo;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 }

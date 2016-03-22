@@ -189,6 +189,11 @@
 			alert('ha erros');
 		}
 	}
+	
+	function imageDownloadClick() {
+		window.location = "myurl/" + 1;
+	}
+	
 	function myFunction() {
 		window.onunload = function(e) {
 			opener.refresh();
@@ -206,6 +211,9 @@
 						src="resources/images/Aubay_-_Logo.png" alt="aubay" /></td>
 					<td align="right"><img style="width: 20px;"
 						src="resources/images/save.png" alt="Gravar"
+						onclick="imageDownloadClick()" /></td>
+					<td align="right"><img style="width: 20px;"
+						src="resources/images/save.png" alt="Gravar"
 						onclick="imageSaveClick()" /></td>
 				</tr>
 			</tbody>
@@ -213,7 +221,7 @@
 	</div>
 	<div id="editForm">
 		<form:form id="candidateForm" action="save" method="POST"
-			commandName="candidate" autocomplete="off">
+			commandName="candidate" autocomplete="off" enctype="multipart/form-data">
 			<table>
 				<h3>Informação Pessoal</h3>
 				<tr>
@@ -273,6 +281,9 @@
 							<form:options items="${listOfUsers}" itemValue="userId"
 								itemLabel="fullName"></form:options>
 						</form:select></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input name="file" type="file"/></td>
 				</tr>
 			</table>
 			<table>

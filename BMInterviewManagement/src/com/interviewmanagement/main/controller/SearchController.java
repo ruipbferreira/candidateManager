@@ -1,5 +1,6 @@
 package com.interviewmanagement.main.controller;
 
+import java.io.File;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +40,8 @@ public class SearchController {
 	private @Autowired UserEditor userEditor;
 
 	private CandidateService candidateService;
+	@Value("${repository}")
+	private String repository;
 
 	@Autowired(required=true)
 	@Qualifier(value="candidateService")
@@ -106,7 +110,14 @@ public class SearchController {
 
 	@RequestMapping("/remove/{id}")
 	public String removeCandidate(Model model, @PathVariable("id") int id, HttpServletRequest request){
-
+		
+		Candidate c = this.candidateService.getCandidateById(id);
+		if(c.getFilename() != null) {
+			File file = new File(repository + System.getProperty("file.separator") + c.getFilename());
+			file.delete();
+		}
+		
+		
 		this.candidateService.removeCandidate(id);
 		request.getSession().setAttribute("isFromRemove", true);
 
