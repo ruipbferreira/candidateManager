@@ -16,7 +16,6 @@ public class CandidateProfessionalInfo {
 	public static final String FIELD_AVAILABILITY = "availability";
 	public static final String FIELD_YEAR = "year";
 	public static final String FIELD_ARQ_DEV = "arqDev";
-	public static final String FIELD_ACTIVITY = "activity";
 	public static final String FIELD_TECNOLOGY = "tecnology";
 	public static final String FIELD_ANALISYS = "analisys";
 	public static final String FIELD_FUNCIONAL = "functional";
@@ -39,8 +38,6 @@ public class CandidateProfessionalInfo {
 	
 	@Column(name="ARQ_DEV")
 	private String arqDev;
-	
-	private String activity;
 	
 	private String tecnology;
 	
@@ -89,14 +86,6 @@ public class CandidateProfessionalInfo {
 
 	public void setArqDev(String arqDev) {
 		this.arqDev = arqDev;
-	}
-
-	public String getActivity() {
-		return activity;
-	}
-
-	public void setActivity(String activity) {
-		this.activity = activity;
 	}
 
 	public String getTecnology() {

@@ -1,13 +1,17 @@
 package com.interviewmanagement.main.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -22,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +49,8 @@ public class CandidateController {
 	private @Autowired LanguageEditor languageEditor;
 	private @Autowired UserEditor userEditor;
 	private CandidateService candidateService;
+
+	private static final int BUFFER_SIZE = 4096;
 
 	@Value("${repository}")
 	private String repository;
@@ -112,11 +119,58 @@ public class CandidateController {
 		return "redirect:/candidate?id=" + id;
 	}
 
+	@RequestMapping(value="/download/{id}", method = RequestMethod.GET)
+	public void doDownload(@PathVariable("id") int id, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+
+		// get absolute path of the application
+		ServletContext context = request.getServletContext();
+
+		Candidate c = this.candidateService.getCandidateById(id);
+		if(c != null && c.getFilename() != null) {
+
+			// construct the complete absolute path of the file
+			String fullPath = repository + System.getProperty("file.separator") + c.getFilename();      
+			File downloadFile = new File(fullPath);
+			FileInputStream inputStream = new FileInputStream(downloadFile);
+
+			// get MIME type of the file
+			String mimeType = context.getMimeType(fullPath);
+			if (mimeType == null) {
+				// set to binary type if MIME mapping not found
+				mimeType = "application/octet-stream";
+			}
+			// set content attributes for the response
+			response.setContentType(mimeType);
+			response.setContentLength((int) downloadFile.length());
+
+			// set headers for the response
+			String headerKey = "Content-Disposition";
+			String headerValue = String.format("attachment; filename=\"%s\"",
+					c.getName() + "." + FilenameUtils.getExtension(c.getFilename()));
+			response.setHeader(headerKey, headerValue);
+
+			// get output stream of the response
+			OutputStream outStream = response.getOutputStream();
+
+			byte[] buffer = new byte[BUFFER_SIZE];
+			int bytesRead = -1;
+
+			// write bytes read from the input stream into the output stream
+			while ((bytesRead = inputStream.read(buffer)) != -1) {
+				outStream.write(buffer, 0, bytesRead);
+			}
+
+			inputStream.close();
+			outStream.close();
+		}
+	}
+
 	private String saveCV(String filename, MultipartFile fileToSave)
 			throws RuntimeException, IOException {
 		try {
 			File file = new File(repository + System.getProperty("file.separator")
-					+ filename);
+			+ filename);
 			FileUtils.writeByteArrayToFile(file, fileToSave.getBytes());
 			return filename;
 		} catch (IOException e) {

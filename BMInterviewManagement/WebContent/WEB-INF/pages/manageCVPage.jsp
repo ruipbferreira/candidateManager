@@ -178,10 +178,11 @@
 				<tr>
 					<th width="20%"><spring:message code="candidate.name"/></th>
 					<th width="20%"><spring:message code="candidate.email"/></th>
-					<th width="10%"><spring:message code="candidate.level"/></th>
+					<th width="5%"><spring:message code="candidate.level"/></th>
 					<th width="10%"><spring:message code="candidate.phone"/></th>
 					<th width="20%"><spring:message code="candidate.manager"/></th>
 					<th width="10%"><spring:message code="candidate.local"/></th>
+					<th width="5%">CV</th>
 					<th width="5%"></th>
 					<th width="5%"></th>
 				</tr>
@@ -195,6 +196,12 @@
 						<td>${candidate.phone}</td>
 						<td>${candidate.user.fullName}</td>
 						<td>${candidate.local.name}</td>
+						<td style="text-align: center;">
+							<c:if test="${!empty candidate.filename}">
+								<a href="download/${candidate.id}"><img style="height: 20px;"
+									src="resources/images/document.png" alt="Download" /></a>
+							</c:if>
+						</td>
 						<td style="text-align: center;"><img style="height: 20px;"
 							src="resources/images/edit_grid.png" alt="Editar"
 							onclick="editGridClick('${candidate.id}')" /></td>

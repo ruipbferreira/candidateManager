@@ -209,12 +209,15 @@
 				<tr>
 					<td><img style="height: 20px;"
 						src="resources/images/Aubay_-_Logo.png" alt="aubay" /></td>
-					<td align="right"><img style="width: 20px;"
+					<td align="right">
+						<c:if test="${!empty candidate.filename}">
+							<a href="download/${candidate.id}"><img style="width: 20px;height: 20px;"
+								src="resources/images/document.png" alt="Download" /></a>
+						</c:if>
+						<img style="width: 20px;"
 						src="resources/images/save.png" alt="Gravar"
-						onclick="imageDownloadClick()" /></td>
-					<td align="right"><img style="width: 20px;"
-						src="resources/images/save.png" alt="Gravar"
-						onclick="imageSaveClick()" /></td>
+						onclick="imageSaveClick()" />
+					</td>
 				</tr>
 			</tbody>
 		</table>
