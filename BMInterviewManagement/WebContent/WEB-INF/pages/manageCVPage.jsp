@@ -114,7 +114,7 @@
 							<spring:message code="candidate.email" />
 						</form:label></td>
 					<td><form:input path="email" class="inputForm" /></td>
-					<td><input type="submit" style="width:100px;"
+					<td><input type="submit" name="search" style="width:100px;"
 						value="<spring:message code="search"/>" /></td>
 				</tr>
 				<tr>
@@ -147,7 +147,7 @@
 						</form:label></td>
 					<td><form:input path="professionalInfo.year"
 							class="inputForm"/></td>
-					<td><input type="reset" style="width:100px;"
+					<td><input type="reset" style="width:100px;" name="clear"
 						value="<spring:message code="clear"/>" /></td>
 				</tr>
 				<tr>
@@ -165,8 +165,8 @@
 					<td><form:input path="professionalInfo.functional"
 							class="inputForm" /></td>
 					<td></td>
-						<td></td>
-					<td><input type="button" style="width:100px;" onclick="exportSearch('${candidate}');"
+					<td></td>
+					<td><input type="button" style="width:100px;" onclick="window.location.href='export'"
 						value="<spring:message code="export"/>" /></td>
 				</tr>
 			</table>
