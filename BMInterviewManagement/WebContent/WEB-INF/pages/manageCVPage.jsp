@@ -79,10 +79,10 @@
 				<tr>
 					<td><img style="height: 20px;"
 						src="resources/images/Aubay_-_Logo.png" alt="aubay" /></td>
-					<td align="right"><img style="width: 20px;"
+					<td align="right"><img style="width: 20px; cursor: pointer;"
 						src="resources/images/add-user-icon.png" alt="Novo"
 						onclick="imageNewClick()" /></td>
-					<td align="right" width="20px"><img style="width: 20px;"
+					<td align="right" width="20px"><img style="width: 20px; cursor: pointer;"
 						src="resources/images/logout.png" alt="logout"
 						onclick="imageClick('logout')" /></td>
 				</tr>
@@ -94,11 +94,11 @@
 			<table>
 
 				<tr>
-					<td><form:label path="name">
-							<spring:message code="candidate.name" />
+					<td align="right"><form:label path="name">
+							<spring:message code="candidate.name" /> 
 						</form:label></td>
 					<td><form:input path="name" class="inputForm" /></td>
-					<td><form:label path="level">
+					<td align="right"><form:label path="level">
 							<spring:message code="candidate.level" />
 						</form:label></td>
 					<td><form:select path="level">
@@ -106,11 +106,11 @@
 							<form:options items="${listLevels}" itemValue="code"
 								itemLabel="name"></form:options>
 						</form:select></td>
-					<td><form:label path="phone">
+					<td align="right"><form:label path="phone">
 							<spring:message code="candidate.phone" />
 						</form:label></td>
 					<td><form:input path="phone" class="inputForm" /></td>
-					<td><form:label path="email">
+					<td align="right"><form:label path="email">
 							<spring:message code="candidate.email" />
 						</form:label></td>
 					<td><form:input path="email" class="inputForm" /></td>
@@ -118,7 +118,7 @@
 						value="<spring:message code="search"/>" /></td>
 				</tr>
 				<tr>
-					<td><form:label path="local">
+					<td align="right"><form:label path="local">
 							<spring:message code="candidate.local" />
 						</form:label></td>
 					<td><form:select path="local.localId" class="inputForm">
@@ -126,7 +126,7 @@
 							<form:options items="${listOfILocals}" itemValue="localId"
 								itemLabel="name"></form:options>
 						</form:select></td>
-					<td><form:label path="language">
+					<td align="right"><form:label path="language">
 							<spring:message code="candidate.language" />
 						</form:label></td>
 					<td><form:select path="language.languageId">
@@ -134,7 +134,7 @@
 							<form:options items="${listOfILanguages}" itemValue="languageId"
 								itemLabel="name"></form:options>
 						</form:select></td>
-					<td><form:label path="user">
+					<td align="right"><form:label path="user">
 							<spring:message code="candidate.manager" />
 						</form:label></td>
 					<td><form:select path="user.userId">
@@ -142,7 +142,7 @@
 							<form:options items="${listOfUsers}" itemValue="userId"
 								itemLabel="fullName"></form:options>
 						</form:select></td>
-						<td><form:label path="professionalInfo.year">
+					<td align="right"><form:label path="professionalInfo.year">
 							<spring:message code="candidate.year" />
 						</form:label></td>
 					<td><form:input path="professionalInfo.year"
@@ -151,15 +151,15 @@
 						value="<spring:message code="clear"/>" /></td>
 				</tr>
 				<tr>
-					<td><form:label path="professionalInfo.tecnology">
+					<td align="right"><form:label path="professionalInfo.tecnology">
 							<spring:message code="candidate.tecnologies" />
 						</form:label></td>
 					<td><form:input path="professionalInfo.tecnology" class="inputForm" /></td>
-					<td><form:label path="professionalInfo.arqDev">
+					<td align="right"><form:label path="professionalInfo.arqDev">
 							<spring:message code="candidate.arqDev" />
 						</form:label></td>
 					<td><form:input path="professionalInfo.arqDev" class="inputForm" /></td>
-					<td><form:label path="professionalInfo.functional">
+					<td align="right"><form:label path="professionalInfo.functional">
 							<spring:message code="candidate.functional" />
 						</form:label></td>
 					<td><form:input path="professionalInfo.functional"
@@ -198,14 +198,14 @@
 						<td>${candidate.local.name}</td>
 						<td style="text-align: center;">
 							<c:if test="${!empty candidate.filename}">
-								<a href="download/${candidate.id}"><img style="height: 20px;"
-									src="resources/images/document.png" alt="Download" /></a>
+								<a href="download/${candidate.id}"><img style="height: 20px; cursor: pointer;"
+									src="resources/images/download_grid.png" alt="Download" /></a>
 							</c:if>
 						</td>
-						<td style="text-align: center;"><img style="height: 20px;"
+						<td style="text-align: center;"><img style="height: 20px; cursor: pointer;"
 							src="resources/images/edit_grid.png" alt="Editar"
 							onclick="editGridClick('${candidate.id}')" /></td>
-						<td style="text-align: center;"><img style="height: 16px;"
+						<td style="text-align: center;"><img style="height: 16px; cursor: pointer;"
 							src="resources/images/remove_grid.png" alt="Remover"
 							onclick="removeGridClick('${candidate.id}', '<spring:message code="removeAsk"/>')" /></td>
 					</tr>

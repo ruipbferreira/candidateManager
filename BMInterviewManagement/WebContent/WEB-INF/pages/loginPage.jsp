@@ -50,7 +50,7 @@ div#form-wrapper {
 				</tr>
 				<tr>
 					<td></td>
-					<td><input name="submit" type="submit" value="submit" style="text-align: center;"/></td>
+					<td><input name="submit" type="submit" value="Login" style="text-align: center;"/></td>
 				</tr>
 			</table>
 		</form>
