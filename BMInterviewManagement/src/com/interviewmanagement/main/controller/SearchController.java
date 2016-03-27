@@ -66,6 +66,14 @@ public class SearchController {
 	@RequestMapping(value = "/manageCV", method = RequestMethod.GET)
 	public String loginPage(Model model, Principal principal, HttpServletRequest request, HttpServletResponse response) {
 		Candidate candidate = new Candidate();
+		
+		if(request.getSession().getAttribute("loggedUser") == null) {
+			String username = principal.getName();
+			User user = new User();
+			user.setUsername(username);
+			request.getSession().setAttribute("loggedUser", candidateService.getUserFullName(user));
+		}
+		
 		if(request.getSession().getAttribute("isFromRemove") != null &&
 				((Boolean)request.getSession().getAttribute("isFromRemove"))) {
 			request.getSession().setAttribute("isFromRemove", false);

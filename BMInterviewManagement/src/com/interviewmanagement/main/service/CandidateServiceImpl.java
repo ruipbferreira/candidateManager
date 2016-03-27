@@ -81,4 +81,11 @@ public class CandidateServiceImpl implements CandidateService {
 		return this.refDataDAO.listRefData(field);
 	}
 
+	@Override
+	@Transactional
+	public String getUserFullName(User user) {
+		User retObj = this.usersDAO.getUserByUsername(user);
+		return retObj.getFullName();
+	}
+
 }

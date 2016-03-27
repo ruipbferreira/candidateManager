@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="resources/css/common.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<title>Aubay - ${pageContext.request.userPrincipal.name}</title>
+<title>Aubay - ${loggedUser}</title>
 
 </head>
 <script type="text/javascript">

@@ -9,6 +9,7 @@ import com.interviewmanagement.main.model.RefData;
 import com.interviewmanagement.main.model.User;
 
 public interface CandidateService {
+	public String getUserFullName(User user);
 	public Integer createOdUpdateCandidate(Candidate c);
     public List<Candidate> listCandidate(Candidate candidate);
     public Candidate getCandidateById(int id);
