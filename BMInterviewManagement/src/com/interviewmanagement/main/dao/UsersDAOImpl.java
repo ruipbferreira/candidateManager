@@ -35,4 +35,38 @@ public class UsersDAOImpl implements UsersDAO {
 		criteria.add(Restrictions.eq("username", user.getUsername()));
 		return (User) criteria.list().get(0);
 	}
+
+	@Override
+	public User getUserById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();      
+		User user = (User) session.load(User.class, new Integer(id));
+		return user;
+	}
+
+	@Override
+	public Integer createOrUpdateUser(User user) {
+		Session session = this.sessionFactory.getCurrentSession();
+		if(user.getUserId() == null) {
+			user.setRole("ROLE_USER");
+			user.setPassword(user.getUsername());
+			session.persist(user);
+			session.flush();
+		} else {
+			session.update(user);
+		}
+		return user.getUserId();
+	}
+
+	@Override
+	public void removeUser(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		User user = (User) session.load(User.class, new Integer(id));
+		if(user.getEnabled()) {
+			user.setEnabled(false);
+		} else {
+			user.setEnabled(true);
+		}
+		session.persist(user);
+		session.flush();
+	}
 }

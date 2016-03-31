@@ -10,13 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LoginController {
 	
-	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public String adminPage(Model model) {
-		model.addAttribute("title", "Admin");
-		model.addAttribute("message", "Admin Page - This is protected page!");
-		return "adminPage";
-	}
-
 	@RequestMapping(value = {"/login", "/", "/welcome"}, method = RequestMethod.GET)
 	public String loginPage(Model model) {
 		

@@ -14,8 +14,11 @@ public interface CandidateService {
     public List<Candidate> listCandidate(Candidate candidate);
     public Candidate getCandidateById(int id);
     public void removeCandidate(int id);
-    List<Locality> lislLocalities();
-    List<Language> lisLanguages();
-    List<User> listUsers();
-    List<RefData> listRefData(String field);
+    public List<Locality> lislLocalities();
+    public List<Language> lisLanguages();
+    public List<User> listUsers();
+    public List<RefData> listRefData(String field);
+    public User getUserById(int id);
+	public Integer createOdUpdateUser(User user);
+	public void removeUser(int id);
 }

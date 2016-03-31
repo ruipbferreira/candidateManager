@@ -88,4 +88,22 @@ public class CandidateServiceImpl implements CandidateService {
 		return retObj.getFullName();
 	}
 
+	@Override
+	@Transactional
+	public User getUserById(int id) {
+		return this.usersDAO.getUserById(id);
+	}
+
+	@Override
+	@Transactional
+	public Integer createOdUpdateUser(User user) {
+		return this.usersDAO.createOrUpdateUser(user);
+	}
+
+	@Override
+	@Transactional
+	public void removeUser(int id) {
+		this.usersDAO.removeUser(id);
+	}
+
 }

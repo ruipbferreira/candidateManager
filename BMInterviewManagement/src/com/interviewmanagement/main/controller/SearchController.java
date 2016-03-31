@@ -62,18 +62,28 @@ public class SearchController {
 	public void setCandidateService(CandidateService ps){
 		this.candidateService = ps;
 	}
+	@RequestMapping(value = "/common", method = RequestMethod.GET)
+	public String common(HttpServletRequest req, HttpServletResponse resp) {
+		String url = null;
+		if(req.isUserInRole("ROLE_USER")) {
+			url = "redirect:/manageCV";
+		}else if(req.isUserInRole("ROLE_ADMIN")) {
+			url = "redirect:/admin";
+		}
+		return url;
+	}
 
 	@RequestMapping(value = "/manageCV", method = RequestMethod.GET)
 	public String loginPage(Model model, Principal principal, HttpServletRequest request, HttpServletResponse response) {
 		Candidate candidate = new Candidate();
-		
+
 		if(request.getSession().getAttribute("loggedUser") == null) {
 			String username = principal.getName();
 			User user = new User();
 			user.setUsername(username);
 			request.getSession().setAttribute("loggedUser", candidateService.getUserFullName(user));
 		}
-		
+
 		if(request.getSession().getAttribute("isFromRemove") != null &&
 				((Boolean)request.getSession().getAttribute("isFromRemove"))) {
 			request.getSession().setAttribute("isFromRemove", false);
@@ -102,7 +112,14 @@ public class SearchController {
 		model.addAttribute("listOfILanguages", listOfLanguages);
 
 		List<User> listOfUsers = candidateService.listUsers();
-		model.addAttribute("listOfUsers", listOfUsers);
+		List<User> users = new ArrayList<User>();
+		for (User user : listOfUsers) {
+			if(user.getRole().equals("ROLE_ADMIN")) {
+				continue;
+			}
+			users.add(user);
+		}
+		model.addAttribute("listOfUsers", users);
 
 		request.getSession().removeAttribute("param");
 		return "manageCVPage";
@@ -153,47 +170,47 @@ public class SearchController {
 			// get absolute path of the application
 			File exportFile = File.createTempFile("export_"+new Date().getTime(), ".xls");
 			FileOutputStream outputStream = new FileOutputStream(exportFile);
-			
+
 			HSSFWorkbook workbook = new HSSFWorkbook();
-            HSSFSheet sheet = workbook.createSheet("FirstSheet");  
+			HSSFSheet sheet = workbook.createSheet("FirstSheet");  
 
-            HSSFRow rowhead = sheet.createRow((short)0);
-            rowhead.createCell(0).setCellValue(context.getMessage("candidate.name", null, Locale.getDefault()));
-            rowhead.createCell(1).setCellValue(context.getMessage("candidate.level", null, Locale.getDefault()));
-            rowhead.createCell(2).setCellValue(context.getMessage("candidate.phone", null, Locale.getDefault()));
-            rowhead.createCell(3).setCellValue(context.getMessage("candidate.email", null, Locale.getDefault()));
-            rowhead.createCell(4).setCellValue(context.getMessage("candidate.birthDate", null, Locale.getDefault()));
-            rowhead.createCell(5).setCellValue(context.getMessage("candidate.local", null, Locale.getDefault()));
-            rowhead.createCell(6).setCellValue(context.getMessage("candidate.language", null, Locale.getDefault()));
-            rowhead.createCell(7).setCellValue(context.getMessage("candidate.manager", null, Locale.getDefault()));
-            rowhead.createCell(8).setCellValue(context.getMessage("candidate.year", null, Locale.getDefault()));
-            rowhead.createCell(9).setCellValue(context.getMessage("candidate.situation", null, Locale.getDefault()));
-            rowhead.createCell(10).setCellValue(context.getMessage("candidate.remuneration", null, Locale.getDefault()));
+			HSSFRow rowhead = sheet.createRow((short)0);
+			rowhead.createCell(0).setCellValue(context.getMessage("candidate.name", null, Locale.getDefault()));
+			rowhead.createCell(1).setCellValue(context.getMessage("candidate.level", null, Locale.getDefault()));
+			rowhead.createCell(2).setCellValue(context.getMessage("candidate.phone", null, Locale.getDefault()));
+			rowhead.createCell(3).setCellValue(context.getMessage("candidate.email", null, Locale.getDefault()));
+			rowhead.createCell(4).setCellValue(context.getMessage("candidate.birthDate", null, Locale.getDefault()));
+			rowhead.createCell(5).setCellValue(context.getMessage("candidate.local", null, Locale.getDefault()));
+			rowhead.createCell(6).setCellValue(context.getMessage("candidate.language", null, Locale.getDefault()));
+			rowhead.createCell(7).setCellValue(context.getMessage("candidate.manager", null, Locale.getDefault()));
+			rowhead.createCell(8).setCellValue(context.getMessage("candidate.year", null, Locale.getDefault()));
+			rowhead.createCell(9).setCellValue(context.getMessage("candidate.situation", null, Locale.getDefault()));
+			rowhead.createCell(10).setCellValue(context.getMessage("candidate.remuneration", null, Locale.getDefault()));
 
-            short rowNumb = 1;
-            for (Candidate c : result) {
-            	HSSFRow row = sheet.createRow((short)rowNumb);
-            	row.createCell(0).setCellValue(c.getName());
-            	row.createCell(1).setCellValue(c.getLevel());
-            	row.createCell(2).setCellValue(c.getPhone());
-            	row.createCell(3).setCellValue(c.getEmail());
-                SimpleDateFormat dt1 = new SimpleDateFormat("dd/MM/yyy");
-                row.createCell(4).setCellValue(dt1.format(c.getBirthDate()));
-                row.createCell(5).setCellValue(c.getLocal() != null ? c.getLocal().getName() : "");
-                row.createCell(6).setCellValue(c.getLanguage() != null ? c.getLanguage().getName() : "");
-                row.createCell(7).setCellValue(c.getUser() != null ? c.getUser().getFullName() : "");
-                if(c.getProfessionalInfo() != null) {
-                	row.createCell(8).setCellValue(c.getProfessionalInfo().getYear() != null ? c.getProfessionalInfo().getYear() + "" : "");
-                	row.createCell(9).setCellValue(c.getProfessionalInfo().getSituation() != null ? c.getProfessionalInfo().getSituation() + "" : "");
-                	row.createCell(10).setCellValue(c.getProfessionalInfo().getRemuneration() != null ? c.getProfessionalInfo().getRemuneration() : "");
-                }
-                rowNumb++;
+			short rowNumb = 1;
+			for (Candidate c : result) {
+				HSSFRow row = sheet.createRow((short)rowNumb);
+				row.createCell(0).setCellValue(c.getName());
+				row.createCell(1).setCellValue(c.getLevel());
+				row.createCell(2).setCellValue(c.getPhone());
+				row.createCell(3).setCellValue(c.getEmail());
+				SimpleDateFormat dt1 = new SimpleDateFormat("dd/MM/yyy");
+				row.createCell(4).setCellValue(dt1.format(c.getBirthDate()));
+				row.createCell(5).setCellValue(c.getLocal() != null ? c.getLocal().getName() : "");
+				row.createCell(6).setCellValue(c.getLanguage() != null ? c.getLanguage().getName() : "");
+				row.createCell(7).setCellValue(c.getUser() != null ? c.getUser().getFullName() : "");
+				if(c.getProfessionalInfo() != null) {
+					row.createCell(8).setCellValue(c.getProfessionalInfo().getYear() != null ? c.getProfessionalInfo().getYear() + "" : "");
+					row.createCell(9).setCellValue(c.getProfessionalInfo().getSituation() != null ? c.getProfessionalInfo().getSituation() + "" : "");
+					row.createCell(10).setCellValue(c.getProfessionalInfo().getRemuneration() != null ? c.getProfessionalInfo().getRemuneration() : "");
+				}
+				rowNumb++;
 			}
-            
-            
-            workbook.write(outputStream);
-            outputStream.close();
-            FileInputStream inputStream = new FileInputStream(exportFile);
+
+
+			workbook.write(outputStream);
+			outputStream.close();
+			FileInputStream inputStream = new FileInputStream(exportFile);
 			// get MIME type of the file
 			String mimeType =  "application/octet-stream";
 			// set content attributes for the response

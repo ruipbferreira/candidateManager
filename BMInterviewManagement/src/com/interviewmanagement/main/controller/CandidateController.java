@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -87,7 +88,14 @@ public class CandidateController {
 		model.addAttribute("listOfILanguages", listOfLanguages);
 
 		List<User> listOfUsers = candidateService.listUsers();
-		model.addAttribute("listOfUsers", listOfUsers);
+		List<User> users = new ArrayList<User>();
+		for (User user : listOfUsers) {
+			if(user.getRole().equals("ROLE_ADMIN")) {
+				continue;
+			}
+			users.add(user);
+		}
+		model.addAttribute("listOfUsers", users);
 
 		return "candidatePage";
 	}
