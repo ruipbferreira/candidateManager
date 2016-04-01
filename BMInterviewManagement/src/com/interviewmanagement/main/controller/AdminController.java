@@ -4,8 +4,11 @@ import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,7 +58,16 @@ public class AdminController {
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public String saveCandidate(@ModelAttribute("user") @Validated User user, 
 			BindingResult result, Model model) {
-		Integer id = this.candidateService.createOdUpdateUser(user);
+		Integer id = null;
+		if(user.getUserId() != null) {
+			id = this.candidateService.createOdUpdateUser(user);
+		} else {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String pass = RandomStringUtils.randomAlphanumeric(RandomUtils.nextInt(13) + 8);
+			user.setPassword(passwordEncoder.encode(pass));
+			id = this.candidateService.createOdUpdateUser(user);
+			System.out.println(pass);
+		}
 		return "redirect:/user?id=" + id;
 	}
 	

@@ -35,6 +35,7 @@
  
       <!-- authentication from database -->
       <authentication-provider>
+      	  <password-encoder hash="bcrypt" />
           <jdbc-user-service data-source-ref="myDataSource"
               users-by-username-query="select username,password, enabled from users where username=?"
               authorities-by-username-query="select username, role from users where username=?" />

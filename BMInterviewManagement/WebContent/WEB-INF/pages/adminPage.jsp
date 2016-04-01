@@ -17,7 +17,16 @@
 
 </head>
 <script type="text/javascript">
-	
+	$(document).ready(function() {
+		$('#table >tbody > tr').dblclick(function() {
+			var $this = $(this);
+			var row = $this.closest("tr");
+			var id = row.data("id");
+
+			editGridClick(id);
+		});
+	});
+
 	function imageClick(url) {
 		window.location = url;
 	}
@@ -32,28 +41,30 @@
 	function imageNewClick() {
 		var y = window.top.outerHeight / 2 + window.top.screenY - (300 / 2)
 		var x = window.top.outerWidth / 2 + window.top.screenX - (400 / 2)
-		window
+		myWindow = window
 				.open(
 						"user",
 						'window',
 						'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=400, height=300, top='
 								+ y + ', left=' + x);
-		window.refresh = function(){
-			document.getElementById("searchCandidate").submit();
+		window.refresh = function() {
+			window.location.href="admin";
+			myWindow.close();
 		}
 	}
 	function editGridClick(id) {
 
 		var y = window.top.outerHeight / 2 + window.top.screenY - (300 / 2)
 		var x = window.top.outerWidth / 2 + window.top.screenX - (400 / 2)
-		window
+		myWindow = window
 				.open(
 						"user?id=" + id,
 						'window',
 						'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=400, height=300, top='
 								+ y + ', left=' + x);
-		window.refresh = function(){
-			document.getElementById("searchCandidate").submit();
+		window.refresh = function() {
+			window.location.href="admin";
+			myWindow.close();
 		}
 	}
 </script>
@@ -95,20 +106,15 @@
 							style="height: 20px; cursor: pointer;"
 							src="resources/images/edit_grid.png" alt="Editar"
 							onclick="editGridClick('${user.userId}')" /></td>
-						<td style="text-align: center;">
-							<c:if test="${user.enabled}">
-								<img
-									style="height: 20px; cursor: pointer;"
+						<td style="text-align: center;"><c:if test="${user.enabled}">
+								<img style="height: 20px; cursor: pointer;"
 									src="resources/images/disable.png" alt="Inactivar"
 									onclick="removeGridClick('${user.userId}', '<spring:message code="inactiveAsk"/>')" />
-							</c:if>	
-							<c:if test="${not user.enabled}">
-								<img
-									style="height: 20px; cursor: pointer;"
+							</c:if> <c:if test="${not user.enabled}">
+								<img style="height: 20px; cursor: pointer;"
 									src="resources/images/enable.png" alt="Activar"
 									onclick="removeGridClick('${user.userId}', '<spring:message code="activeAsk"/>')" />
-							</c:if>
-						</td>
+							</c:if></td>
 					</tr>
 				</c:forEach>
 			</c:if>

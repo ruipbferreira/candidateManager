@@ -48,7 +48,7 @@ public class UsersDAOImpl implements UsersDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		if(user.getUserId() == null) {
 			user.setRole("ROLE_USER");
-			user.setPassword(user.getUsername());
+//			user.setPassword(user.getUsername());
 			session.persist(user);
 			session.flush();
 		} else {

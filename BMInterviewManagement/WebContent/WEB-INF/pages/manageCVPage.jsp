@@ -44,7 +44,7 @@
 	function imageNewClick() {
 		var y = window.top.outerHeight / 2 + window.top.screenY - (700 / 2)
 		var x = window.top.outerWidth / 2 + window.top.screenX - (1000 / 2)
-		window
+		myWindow = window
 				.open(
 						"candidate",
 						'window',
@@ -52,13 +52,14 @@
 								+ y + ', left=' + x);
 		window.refresh = function(){
 			document.getElementById("searchCandidate").submit();
+			myWindow.close();
 		}
 	}
 	function editGridClick(id) {
 
 		var y = window.top.outerHeight / 2 + window.top.screenY - (700 / 2)
 		var x = window.top.outerWidth / 2 + window.top.screenX - (1000 / 2)
-		window
+		myWindow = window
 				.open(
 						"candidate?id=" + id,
 						'window',
@@ -66,6 +67,7 @@
 								+ y + ', left=' + x);
 		window.refresh = function(){
 			document.getElementById("searchCandidate").submit();
+			myWindow.close();
 		}
 	}
 	function clearForm() {
