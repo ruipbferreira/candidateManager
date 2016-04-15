@@ -1,6 +1,7 @@
 package com.interviewmanagement.main.controller;
 
 import java.security.Principal;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +9,9 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +29,11 @@ import com.interviewmanagement.main.service.CandidateService;
 public class AdminController {
 	
 	private CandidateService candidateService;
+	
+	private @Autowired ApplicationContext context;
+	
+	@Autowired
+    private JavaMailSender mailSender;
 	
 	@Autowired(required=true)
 	@Qualifier(value="candidateService")
@@ -66,7 +75,16 @@ public class AdminController {
 			String pass = RandomStringUtils.randomAlphanumeric(RandomUtils.nextInt(13) + 8);
 			user.setPassword(passwordEncoder.encode(pass));
 			id = this.candidateService.createOdUpdateUser(user);
-			System.out.println(pass);
+			
+			SimpleMailMessage email = new SimpleMailMessage();
+	        email.setTo(user.getEmail());
+	        email.setSubject(context.getMessage("mail.subject", null, Locale.getDefault()) + " " + user.getUsername());
+	        String text = context.getMessage("mail.text", null, Locale.getDefault());
+	        
+	        email.setText(text + " " + pass);
+	        
+	        mailSender.send(email);
+			
 		}
 		return "redirect:/user?id=" + id;
 	}
